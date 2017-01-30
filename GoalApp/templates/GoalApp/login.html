@@ -1,0 +1,91 @@
+<!doctype html>
+{% load static %}
+<html>
+    <head>
+
+        <title>login</title>
+
+    </head>
+    <body>
+        <div class="page-header" >
+            <h1>LOGIN</h1>
+        </div>
+
+			<div class="col-md-8 col-md-offset-2">
+            <form method="POST" id="loginfrm">{% csrf_token %}
+{#                           <div {{ form.as_p }}#}
+
+                    <span>Name/Nickname/PhoneNo.<div class="form-group">{{ form.username }}<span class="error_username"></span></div></span>
+                    <span>Email<div class="form-group">{{ form.email }}<span class="error_email"></span></div></span>
+                    <span>Password<div class="form-group">{{ form.password }}<span class="error_password"></span></div></span>
+
+                    <button id="loginbtn" class="btn btn-theme btn-block btn-md" value="Login">LOGIN</button>
+{#                    <input value="submit" type="submit">#}
+{#                    <div id="msgt"> <b>  {{ msg }}  </b></div>#}
+                    {% if messages %}
+                    <ul class="messages">
+                        {% for message in messages %}
+                        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+            </form>
+            </div>
+    </body>
+{#    <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>#}
+{#    <script>#}
+{#     $("#id_username").change(function () {#}
+{#      console.log( $(this).val() );#}
+{#     });#}
+{#    </script>#}
+{##}
+{#    <script>#}
+{#    $("#id_username").change(function () {#}
+{#      var username = $(this).val();#}
+{##}
+{#      $.ajax({#}
+{#        url: '/ajax/validate_username/',#}
+{#        data: {#}
+{#          'username': username#}
+{#        },#}
+{#        dataType: 'json',#}
+{#        success: function (data) {#}
+{#          if (data.is_taken) {#}
+{#            alert("A user with this username already exists.");#}
+{#          }#}
+{#        }#}
+{#      });#}
+{##}
+{#    });#}
+{#    </script>#}
+<script>
+$(document).ready(function() {
+    $('#loginbtn').click(function(e){
+        e.preventDefault();
+
+        form = $('#loginfrm');
+        var data = form.serialize()
+        $.ajax({
+        type: "post",
+        data: data,
+        url: f.attr("action"),
+        success: function (data) {
+            var d = JSON.parse(data)
+            console.log(d['status'])
+
+            if(d['status']=="failed"){
+
+                for(i in d['data']){
+                $('.error_'+ i).text(d['data'][i][0])
+                alert("Sorry You Failed To LogIn")
+            }
+            }
+
+        }
+        });
+    });
+
+});
+
+</script>
+</html>
